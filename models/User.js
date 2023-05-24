@@ -12,7 +12,15 @@ const UserSchema = new Schema({
     email:{
         type:String,
         required:true
-    }
+    },
+    createdRooms:[{
+        type:Schema.Types.ObjectId,
+        ref:'Room'
+    }],
+    joinedRooms:[{
+        type:Schema.Types.ObjectId,
+        ref:'Room'
+    }],
 
 })
 
