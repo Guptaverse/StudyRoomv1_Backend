@@ -15,11 +15,11 @@ const UserSchema = new Schema({
     },
     createdRooms:[{
         type:Schema.Types.ObjectId,
-        ref:'Room'
+        ref:'rooms'
     }],
     joinedRooms:[{
         type:Schema.Types.ObjectId,
-        ref:'Room'
+        ref:'rooms'
     }],
 
 })

@@ -21,6 +21,7 @@ mongoDB();
 
 //routes
 app.use('/auth',require("./Routes/auth"))
+app.use('/room',require("./Routes/roomCreation"))
 // app.use('/register',require("./Routes/createUser"))
 // app.use('/login',require("./Routes/createUser"))
 // app.use('/login',require("./Routes/createUser"))

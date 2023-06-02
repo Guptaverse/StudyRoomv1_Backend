@@ -4,7 +4,7 @@ const {Schema} = mongoose;
 const RoomSchema = new Schema({
     host:{
         type:Schema.Types.ObjectId,
-        ref:'User',
+        ref:'user',
         required:true,
     },
     start:{
@@ -17,11 +17,11 @@ const RoomSchema = new Schema({
     },
     subject:[{
         type:Schema.Types.ObjectId,
-        ref:'Subject'
+        ref:'subject'
     }],
     joinedUsers:[{
         type:Schema.Types.ObjectId,
-        ref:'User'
+        ref:'user'
     }],
     createAt:{
         type:Date,
@@ -29,4 +29,4 @@ const RoomSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('room',RoomSchema);
+module.exports = mongoose.model('rooms',RoomSchema);

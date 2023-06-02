@@ -9,7 +9,7 @@ const ScoreSchema = new Schema({
     },
     roomId:{
         type:Schema.Types.ObjectId,
-        ref:'Room',
+        ref:'Rooms',
         required:true,
     },
     scoreId:{

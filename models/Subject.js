@@ -8,8 +8,12 @@ const SubjectSchema = new Schema({
     },
     questions:[{
         type:Schema.Types.ObjectId,
-        ref:'Question'
+        ref:'question'
     }],
+    description:{
+        type:String,
+        required:true,
+    },
     createAt:{
         type:Date,
         default:Date.now()
