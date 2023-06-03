@@ -10,33 +10,42 @@ const uid = new ShortUniqueId({ length: 10 });
 exports.createRoom = async (req, res) => {
     try {
         const { username, subject, start } = req.body;
-        // console.log('subject', subject);
-        // console.log('start', start);
-        const userID = '647874ca24f6b3716012a86e'
-
+        console.log('start', start);
+        const userID = '646dd4a6a2baa3d5bf385708'
+        
         const user = await User.findById(userID);
         // console.log('user', user);
-
+        
         let sub = [];
-
+        
         console.log('error started here ->')
+        // console.log('subject', subject[subject.length-1].QuestionBox[0].question);
 
         await Promise.all(subject.map(async (element, ind) => {
-            const questions = [];
-            element.QuestionBox.map(async (element, i) => {
-                const newQuestion = {
-                    question: element.question,
-                    answer: element.answer,
-                    options: element.option
-                };
-                const que = await Question.create(newQuestion);
-                questions.push(que._id);
-            });
+            let questions = [];
+            await Promise.all(
+
+                element.QuestionBox.map(async (element, i) => {
+                    // console.log("no of question :",i);
+    
+                    const newQuestion = {
+                        question: element.question,
+                        answer: element.answer,
+                        options: element.option
+                    };
+                    const que = await Question.create(newQuestion);
+                    questions.push(que._id);
+                    // console.log("question length : ",questions.length,"question id : ", que._id);
+                })
+            )
+            // console.log("question arr : ", questions)
             const newSubject = {
                 name: element.Subject,
                 description: element.Description,
                 questions
             };
+            // console.log("newSubject : ", newSubject)
+
             const subjectId = await Subject.create(newSubject);
             sub.push(subjectId._id);
         }))
