@@ -86,3 +86,56 @@ exports.findRoom = async (req, res) => {
         res.json({ success: false, error });
     }
 }
+
+exports.joinRoom = async (req, res) => {
+    try {
+        const { userID, roomID } = req.body;
+        const user = await User.findById(userID);
+        user.joinedRooms.push(roomID);
+        await user.save();
+        const room = await Rooms.find({
+            socketId: roomID
+        })
+        room.joinedUsers.push(userID);
+        await room.save();
+        res.json({ success: true, data: room });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, error });
+    }
+}
+
+exports.getUserData = async (req, res) => {
+    try {
+        const { userID } = req.body;
+        const user = await User.findById(userID).populate({
+            path: 'createdRooms',
+            populate: {
+                path: 'subject',
+                populate: {
+                    path: 'questions'
+                }
+            }
+        });
+        res.json({ success: true, data: user });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, error });
+    }
+}
+
+exports.getRoomData = async (req, res) => {
+    try {
+        const { roomID } = req.body;
+        const room = await Rooms.findOne({ socketId: roomID }).populate({
+            path: 'subject',
+            populate: {
+                path: 'questions'
+            }
+        });
+        res.json({ success: true, data: room });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, error });
+    }
+}
