@@ -5,7 +5,6 @@ const { getUserData, getRoomData, joinRoom } = require('../Controllers/roomCreat
 const router = express.Router()
 
 router.route('/createRoom').post(createRoom)
-// router.route('/find').post(findRoom)
 router.route('/find').post(getRoomData);
 router.route('/leaderboard').post(getRoomLeaderboard);
 router.route('/me').post(getUserData);
@@ -13,5 +12,3 @@ router.route('/joinRoom').post(joinRoom);
 router.route('/uploadmarks').post(uploadMarks);
 
 module.exports = router;
-
-
