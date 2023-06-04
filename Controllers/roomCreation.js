@@ -2,6 +2,7 @@ const User = require('../models/User')
 const Rooms = require('../models/Rooms')
 const Subject = require('../models/Subject');
 const Question = require('../models/Questions');
+const Score = require('../models/Score');
 const { default: ShortUniqueId } = require('short-unique-id');
 const { ObjectId } = require('mongodb');
 
@@ -12,12 +13,12 @@ exports.createRoom = async (req, res) => {
         const { username, subject, start } = req.body;
         console.log('start', start);
         const userID = '646dd4a6a2baa3d5bf385708'
-        
+
         const user = await User.findById(userID);
         // console.log('user', user);
-        
+
         let sub = [];
-        
+
         console.log('error started here ->')
         // console.log('subject', subject[subject.length-1].QuestionBox[0].question);
 
@@ -27,7 +28,7 @@ exports.createRoom = async (req, res) => {
 
                 element.QuestionBox.map(async (element, i) => {
                     // console.log("no of question :",i);
-    
+
                     const newQuestion = {
                         question: element.question,
                         answer: element.answer,
@@ -58,7 +59,7 @@ exports.createRoom = async (req, res) => {
             joinedUsers: [],
         });
 
-        console.log('room', room,user)
+        console.log('room', room, user)
 
         user.createdRooms.push(room._id);
         await user.save();
@@ -83,7 +84,7 @@ exports.createRoom = async (req, res) => {
 exports.findRoom = async (req, res) => {
     try {
         const { roomID } = req.body;
-        const room = await Rooms.findOne({socketId: roomID}).populate({
+        const room = await Rooms.findOne({ socketId: roomID }).populate({
             path: 'subject',
             populate: {
                 path: 'questions'
@@ -146,5 +147,26 @@ exports.getRoomData = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.json({ success: false, error });
+    }
+}
+
+exports.uploadMarks = async (req, res) => {
+    try {
+        const { roomID, userID, subjectID, score } = req.body;
+        console.log('roomId', roomID);
+        console.log('userId', userID);
+        console.log('subjectId', subjectID);
+        console.log('score', score);
+        const newScore = new Score({
+            userId: userID,
+            roomId: roomID,
+            subjectId: subjectID,
+            score
+        });
+
+        await newScore.save();
+        res.json({ success: true, data: newScore });
+    } catch (error) {
+
     }
 }

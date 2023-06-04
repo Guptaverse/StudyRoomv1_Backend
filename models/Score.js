@@ -12,7 +12,7 @@ const ScoreSchema = new Schema({
         ref:'Rooms',
         required:true,
     },
-    scoreId:{
+    subjectId:{
         type:Number,
         required:true,
     },
