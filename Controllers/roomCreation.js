@@ -109,8 +109,9 @@ exports.joinRoom = async (req, res) => {
             return res.json({success:false,error:"Room not found"})
         }
         console.log(room)
-        if (room.joinedUsers.includes(userID)) {
+        if (!(room.joinedUsers.includes(userID))) {
             user.joinedRooms.push(room._id);
+            console.log("roomID : ",room._id)
             await user.save();
             room.joinedUsers.push(userID);
             await room.save();
