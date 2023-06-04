@@ -99,15 +99,22 @@ exports.findRoom = async (req, res) => {
 
 exports.joinRoom = async (req, res) => {
     try {
-        const { userID, roomID } = req.body;
+        const { userID, socketID } = req.body;
+        console.log("userID", userID, "socketID", socketID);
         const user = await User.findById(userID);
-        user.joinedRooms.push(roomID);
-        await user.save();
-        const room = await Rooms.find({
-            socketId: roomID,
-        });
-        room.joinedUsers.push(userID);
-        await room.save();
+        const room = await Rooms.findOne({
+            socketId: socketID,
+        })
+        if(!room){
+            return res.json({success:false,error:"Room not found"})
+        }
+        console.log(room)
+        if (room.joinedUsers.includes(userID)) {
+            user.joinedRooms.push(room._id);
+            await user.save();
+            room.joinedUsers.push(userID);
+            await room.save();
+        }
         res.json({ success: true, data: room });
     } catch (error) {
         console.log(error);
