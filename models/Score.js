@@ -13,7 +13,8 @@ const ScoreSchema = new Schema({
         required:true,
     },
     subjectId:{
-        type:Number,
+        type:Schema.Types.ObjectId,
+        ref:'subject',
         required:true,
     },
     score:{
