@@ -11,7 +11,7 @@ exports.register = async(req,res)=>{
             password:req.body.password,
             email:req.body.email
         })
-    res.status(200).json({success:true,data:user})
+    res.status(200).json({success:true,user})
     // res.json({success:true,data:user});
 } catch (error) {
         console.log(error); 
