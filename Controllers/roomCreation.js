@@ -180,6 +180,67 @@ exports.getRoomData = async (req, res) => {
         res.json({ success: false, error });
     }
 }
+exports.getRoomLeaderboard = async (req, res) => {
+    try {
+        const { roomID } = req.body;
+        const room = await Rooms.findOne({ socketId: roomID }).populate({
+            path: 'subject',
+            populate: {
+                path: 'questions'
+            }
+        });
+        // console.log(room)
+        const room_mongoId = room._id
+        let joindUsers_id = room.joinedUsers
+        let  subject_id = room.subject.map(subject=>subject._id)
+        // console.log("student_id : ",subject_id);
+        let students=[]
+        await Promise.all(
+
+            joindUsers_id.map(
+
+                async(joinId,index)=>{
+                    let scores = []
+                    await Promise.all(
+
+                        subject_id.map(
+                            async(subId,index)=>{
+                                
+                                const uniqueScore = await Score.findOne({
+                                    userId:joinId,
+                                    subjectId:subId,
+                                    roomId:room_mongoId
+
+                                })
+                                console.log("US : ",uniqueScore)
+                                scores.push(uniqueScore.score);
+                                console.log("scores : ",scores)
+
+                            }
+                        )
+                    )
+                    const user = await User.findById(joinId)
+                    students.push(
+                        {
+                            name:user.username,
+                            scores:scores
+                        }
+
+                    )
+
+
+                }
+            )
+
+        )
+        console.log(students)
+        
+        res.json({ success: true, data: room });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, error });
+    }
+}
 
 exports.uploadMarks = async (req, res) => {
     try {
