@@ -75,6 +75,9 @@ io.on('connection', (socket) => {
 //routes
 app.use('/auth', require("./Routes/auth"))
 app.use('/room', require("./Routes/roomCreation"))
+app.get('/health', (req, res) => {
+    res.send('OK');
+});
 // app.use('/register',require("./Routes/createUser"))
 // app.use('/login',require("./Routes/createUser"))
 // app.use('/login',require("./Routes/createUser"))
