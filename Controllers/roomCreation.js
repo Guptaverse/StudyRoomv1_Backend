@@ -267,7 +267,8 @@ exports.uploadMarks = async (req, res) => {
         });
         console.log('helo', newScore)
         await newScore.save();
-        console.log('helo')
+        // newScore.populate('userId');
+        // console.log('newScore', newScore)
         res.json({ success: true, data: newScore });
     } catch (error) {
 

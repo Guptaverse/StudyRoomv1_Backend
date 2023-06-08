@@ -9,11 +9,7 @@ const { Server } = require('socket.io');
 
 app.use(express.json())
 app.use(express.urlencoded())
-app.use(cors(
-    {
-        origin: '*',
-    }
-))
+app.use(cors({ origin: '*' }))
 mongoDB();
 
 const server = http.createServer(app);
