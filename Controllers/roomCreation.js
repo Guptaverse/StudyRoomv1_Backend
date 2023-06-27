@@ -191,14 +191,14 @@ exports.getRoomLeaderboard = async (req, res) => {
             populate: {
                 path: 'questions'
             }
-        },{
+        }, {
             path: 'joinedUsers'
         }]);
         console.log(room)
         const room_mongoId = room._id
         let joindUsers_id = room.joinedUsers
         let subject_id = room.subject.map(subject => subject._id)
-        console.log("subject_id : ",subject_id);
+        console.log("subject_id : ", subject_id);
         let students = []
         await Promise.all(
             joindUsers_id.map(async (joinId, index) => {
@@ -219,7 +219,10 @@ exports.getRoomLeaderboard = async (req, res) => {
                             roomId: room_mongoId
                         })
                         console.log("uniqueScore : ", uniqueScore)
-                        if(!uniqueScore) return
+                        if (!uniqueScore) {
+                            scores.push('');
+                            return
+                        }
                         console.log("US : ", uniqueScore)
                         scores.push(uniqueScore.score);
                         console.log("scores : ", scores)
@@ -232,7 +235,7 @@ exports.getRoomLeaderboard = async (req, res) => {
                     {
                         name: user.username,
                         scores: scores,
-                        photo:'../assets/boy.png'
+                        photo: '../assets/boy.png'
                     }
 
                 )
@@ -244,7 +247,7 @@ exports.getRoomLeaderboard = async (req, res) => {
         )
         console.log(students)
 
-        res.json({ success: true, data: room , students});
+        res.json({ success: true, data: room, students });
     } catch (error) {
         console.log(error);
         res.json({ success: false, error });
